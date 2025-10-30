@@ -1,0 +1,86 @@
+# TradeFlow - Robots.txt
+# Welcome search engines! We want maximum visibility.
+
+User-agent: *
+Allow: /
+Allow: /signals
+Allow: /copy-trading
+Allow: /markets/*
+Allow: /education/*
+Allow: /news/*
+Allow: /brokers/*
+Allow: /api/generate-signals
+Allow: /api/generate-news
+
+Disallow: /api/admin/*
+Disallow: /admin/*
+Disallow: /_next/static/
+Disallow: /private/*
+
+# Sitemap
+Sitemap: https://tradeflow.cloud/sitemap.xml
+Sitemap: https://tradeflow.cloud/sitemap-news.xml
+
+# Crawl-delay for major search engines (0 = no delay, crawl as fast as you want)
+Crawl-delay: 0
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
+
+# Baidu (Chinese search engine)
+User-agent: Baiduspider
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Allow social media crawlers for rich previews
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# SEO Tools
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+User-agent: MJ12bot
+Allow: /
+
+User-agent: DotBot
+Allow: /
