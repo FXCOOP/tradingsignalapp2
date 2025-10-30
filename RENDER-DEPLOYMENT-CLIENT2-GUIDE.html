@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render Deployment Guide - Client 2 (tradingsignalapp2)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3 {
+            color: #2a5298;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .step {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .emoji {
+            font-size: 1.3em;
+            margin-right: 10px;
+        }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Render Deployment Guide</h1>
+            <p>Complete Setup for Client 2 - tradingsignalapp2</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">GitHub Repository: <strong>FXCOOP/tradingsignalapp2</strong></p>
+        </div>
+
+        <div class="content">
+
+            <!-- STEP 1: REPOSITORY STATUS -->
+            <div class="section">
+                <h2><span class="emoji">📦</span>Step 1: Repository Status</h2>
+
+                <div class="success">
+                    <h3>✅ Repository Successfully Created</h3>
+                    <ul class="checklist">
+                        <li>Original repository cloned from <code>tradingsignalapp</code></li>
+                        <li>Duplicate created as <code>tradingsignalapp2</code></li>
+                        <li>New Git repository initialized</li>
+                        <li>Pushed to GitHub: <code>https://github.com/FXCOOP/tradingsignalapp2</code></li>
+                        <li>All 208 files successfully committed</li>
+                    </ul>
+                </div>
+
+                <div class="info">
+                    <strong>📍 Local Path:</strong><br>
+                    <code>C:\Users\User\OneDrive\Desktop\tradingsignalapp2</code>
+                </div>
+            </div>
+
+            <!-- STEP 2: RENDER DEPLOYMENT -->
+            <div class="section">
+                <h2><span class="emoji">☁️</span>Step 2: Deploy to Render</h2>
+
+                <h3>2.1 Create New Web Service</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Go to Render Dashboard</strong>
+                    <ul>
+                        <li>Visit: <a href="https://dashboard.render.com" target="_blank">https://dashboard.render.com</a></li>
+                        <li>Click <code>New +</code> button (top right)</li>
+                        <li>Select <code>Web Service</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Connect GitHub Repository</strong>
+                    <ul>
+                        <li>Click <code>Connect a repository</code></li>
+                        <li>Search for: <code>tradingsignalapp2</code></li>
+                        <li>Click <code>Connect</code> next to <code>FXCOOP/tradingsignalapp2</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Configure Service Settings</strong>
+                    <table>
+                        <tr>
+                            <th>Setting</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Name</strong></td>
+                            <td><code>tradingsignalapp-client2</code> (or your preferred name)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Region</strong></td>
+                            <td>Oregon (US West) - closest to most users</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Branch</strong></td>
+                            <td><code>main</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Root Directory</strong></td>
+                            <td>(leave empty)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Environment</strong></td>
+                            <td><code>Node</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Build Command</strong></td>
+                            <td><code>npm ci && npm run build</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Start Command</strong></td>
+                            <td><code>npm start</code></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <strong>Select Plan</strong>
+                    <ul>
+                        <li><strong>Free Tier:</strong> Spins down after 15 min inactivity, 750 hours/month</li>
+                        <li><strong>Starter ($7/month):</strong> Always on, 400 build minutes</li>
+                        <li><strong>Recommended:</strong> Start with Free, upgrade to Starter if needed</li>
+                    </ul>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Important:</strong> Do NOT click "Create Web Service" yet! First, add environment variables in Step 3.
+                </div>
+            </div>
+
+            <!-- STEP 3: ENVIRONMENT VARIABLES -->
+            <div class="section">
+                <h2><span class="emoji">🔐</span>Step 3: Configure Environment Variables</h2>
+
+                <div class="info">
+                    <strong>📝 Before Creating Service:</strong> Scroll down to "Environment Variables" section and add these:
+                </div>
+
+                <h3>Required Environment Variables</h3>
+                <table>
+                    <tr>
+                        <th>Variable Name</th>
+                        <th>Description</th>
+                        <th>Where to Get It</th>
+                    </tr>
+                    <tr>
+                        <td><code>NODE_ENV</code></td>
+                        <td>Environment mode</td>
+                        <td>Set to: <code>production</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>OPENAI_API_KEY</code></td>
+                        <td>OpenAI API key for AI features</td>
+                        <td><a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a></td>
+                    </tr>
+                    <tr>
+                        <td><code>SUPABASE_URL</code></td>
+                        <td>Supabase project URL</td>
+                        <td>Supabase Dashboard → Settings → API</td>
+                    </tr>
+                    <tr>
+                        <td><code>SUPABASE_ANON_KEY</code></td>
+                        <td>Supabase anonymous key</td>
+                        <td>Supabase Dashboard → Settings → API</td>
+                    </tr>
+                    <tr>
+                        <td><code>SUPABASE_SERVICE_ROLE_KEY</code></td>
+                        <td>Supabase service role key</td>
+                        <td>Supabase Dashboard → Settings → API (secret key)</td>
+                    </tr>
+                    <tr>
+                        <td><code>EXNESS_AFFILIATE_ID</code></td>
+                        <td>Your Exness affiliate ID</td>
+                        <td>From Client 2's Exness account</td>
+                    </tr>
+                    <tr>
+                        <td><code>RESEND_API_KEY</code></td>
+                        <td>Email service API key (optional)</td>
+                        <td><a href="https://resend.com" target="_blank">Resend.com</a></td>
+                    </tr>
+                </table>
+
+                <div class="warning">
+                    <strong>🔒 Security Note:</strong>
+                    <ul>
+                        <li>Never commit API keys to GitHub</li>
+                        <li>Each client should have separate Supabase projects</li>
+                        <li>Use different Exness affiliate IDs for each client</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>How to Add Environment Variables</strong>
+                    <ul>
+                        <li>Click <code>Add Environment Variable</code></li>
+                        <li>Enter <code>Key</code> (e.g., OPENAI_API_KEY)</li>
+                        <li>Enter <code>Value</code> (paste your API key)</li>
+                        <li>Repeat for all variables above</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- STEP 4: CUSTOM DOMAIN & SUBDOMAIN -->
+            <div class="section">
+                <h2><span class="emoji">🌐</span>Step 4: Setup Custom Domain/Subdomain</h2>
+
+                <div class="success">
+                    <strong>✅ Default Render URL:</strong><br>
+                    After deployment, you'll get: <code>https://tradingsignalapp-client2.onrender.com</code>
+                </div>
+
+                <h3>Option A: Use Subdomain (Recommended)</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>In Render Dashboard</strong>
+                    <ul>
+                        <li>Go to your deployed service</li>
+                        <li>Click <code>Settings</code> tab</li>
+                        <li>Scroll to <code>Custom Domains</code> section</li>
+                        <li>Click <code>Add Custom Domain</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Enter Your Subdomain</strong>
+                    <ul>
+                        <li>Example: <code>client2.tradingsignalapp.com</code></li>
+                        <li>Or: <code>signals2.yourdomain.com</code></li>
+                        <li>Click <code>Save</code></li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Configure DNS Settings</strong>
+                    <p>Go to your domain registrar (GoDaddy, Namecheap, Cloudflare, etc.) and add:</p>
+
+                    <div class="code-block">
+<pre>Type: CNAME
+Name: client2 (or your subdomain prefix)
+Value: tradingsignalapp-client2.onrender.com
+TTL: 3600 (or Auto)</pre>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>⏱️ DNS Propagation:</strong> Can take 5 minutes to 48 hours. Usually ready in 15-30 minutes.
+                </div>
+
+                <h3>Option B: Use Separate Domain</h3>
+                <div class="step">
+                    <strong>If client has their own domain:</strong>
+                    <ul>
+                        <li>Add custom domain in Render: <code>tradingsignals-client2.com</code></li>
+                        <li>Add DNS records:</li>
+                    </ul>
+                    <div class="code-block">
+<pre>Type: A
+Name: @ (root domain)
+Value: (Render will provide IP address)
+
+Type: CNAME
+Name: www
+Value: tradingsignalapp-client2.onrender.com</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: DEPLOYMENT PROCESS -->
+            <div class="section">
+                <h2><span class="emoji">🚀</span>Step 5: Deploy the Application</h2>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Create Web Service</strong>
+                    <ul>
+                        <li>After configuring all settings and environment variables</li>
+                        <li>Click <code>Create Web Service</code> button</li>
+                        <li>Render will start building your application</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Monitor Build Process</strong>
+                    <ul>
+                        <li>Watch the build logs in real-time</li>
+                        <li>Build typically takes 3-5 minutes</li>
+                        <li>Look for: <code>Build successful</code></li>
+                        <li>Then: <code>Service is live</code></li>
+                    </ul>
+                </div>
+
+                <div class="success">
+                    <h3>✅ Deployment Success Indicators:</h3>
+                    <ul class="checklist">
+                        <li>Green "Live" badge on dashboard</li>
+                        <li>Health check showing ✓</li>
+                        <li>Service URL clickable and loading</li>
+                        <li>No error messages in logs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- STEP 6: POST-DEPLOYMENT -->
+            <div class="section">
+                <h2><span class="emoji">✅</span>Step 6: Post-Deployment Setup</h2>
+
+                <h3>6.1 Test the Application</h3>
+                <div class="step">
+                    <strong>Basic Testing Checklist:</strong>
+                    <ul class="checklist">
+                        <li>Visit your Render URL</li>
+                        <li>Homepage loads without errors</li>
+                        <li>Sign up / Login works</li>
+                        <li>Trading signals display correctly</li>
+                        <li>Exness links work (with correct affiliate ID)</li>
+                        <li>Language switcher functions</li>
+                        <li>Admin dashboard accessible</li>
+                    </ul>
+                </div>
+
+                <h3>6.2 Setup Uptime Monitoring (Free Tier Only)</h3>
+                <div class="warning">
+                    <strong>⚠️ Free Tier Limitation:</strong> Spins down after 15 minutes of inactivity. Solution:
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Use UptimeRobot (Free)</strong>
+                    <ul>
+                        <li>Visit: <a href="https://uptimerobot.com" target="_blank">https://uptimerobot.com</a></li>
+                        <li>Create free account</li>
+                        <li>Add New Monitor:</li>
+                    </ul>
+                    <div class="code-block">
+<pre>Monitor Type: HTTP(s)
+Friendly Name: TradingSignal Client 2
+URL: https://tradingsignalapp-client2.onrender.com
+Monitoring Interval: 5 minutes</pre>
+                    </div>
+                    <li>This will ping your site every 5 minutes, keeping it awake</li>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Or Upgrade to Starter Plan</strong>
+                    <ul>
+                        <li>Cost: $7/month per service</li>
+                        <li>Benefits: Always on, faster, more reliable</li>
+                        <li>Upgrade in: <code>Settings → Plan</code></li>
+                    </ul>
+                </div>
+
+                <h3>6.3 Setup Automated Signal Generation</h3>
+                <div class="step">
+                    <strong>Use EasyCron for Daily Updates:</strong>
+                    <ol>
+                        <li>Visit: <a href="https://www.easycron.com" target="_blank">https://www.easycron.com</a></li>
+                        <li>Create free account (50 cron jobs)</li>
+                        <li>Add new cron job:</li>
+                    </ol>
+                    <div class="code-block">
+<pre>URL: https://your-domain.com/api/cron/generate-daily
+Schedule: 0 6 * * * (6:00 AM daily)
+Method: GET or POST
+Timezone: Your timezone</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 7: CLIENT CUSTOMIZATION -->
+            <div class="section">
+                <h2><span class="emoji">🎨</span>Step 7: Customize for Client 2</h2>
+
+                <div class="info">
+                    <strong>📝 Recommended Customizations:</strong> Make this instance unique for Client 2
+                </div>
+
+                <h3>7.1 Update Branding</h3>
+                <div class="code-block">
+<pre>// In src/app/layout.tsx or similar
+export const metadata = {
+  title: 'Client 2 Trading Signals',
+  description: 'Custom description for client 2',
+}</pre>
+                </div>
+
+                <h3>7.2 Change Exness Affiliate Links</h3>
+                <div class="code-block">
+<pre>// Make sure EXNESS_AFFILIATE_ID in Render env vars is for Client 2
+// All links will automatically use this ID</pre>
+                </div>
+
+                <h3>7.3 Separate Supabase Database</h3>
+                <div class="step">
+                    <strong>Create New Supabase Project for Client 2:</strong>
+                    <ol>
+                        <li>Go to <a href="https://supabase.com/dashboard" target="_blank">Supabase Dashboard</a></li>
+                        <li>Click <code>New Project</code></li>
+                        <li>Name: <code>tradingsignalapp-client2</code></li>
+                        <li>Copy new database credentials</li>
+                        <li>Update environment variables in Render</li>
+                        <li>Run database migrations (see SQL files in repo)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- STEP 8: MAINTENANCE -->
+            <div class="section">
+                <h2><span class="emoji">🔧</span>Step 8: Ongoing Maintenance</h2>
+
+                <h3>Auto-Deploy from GitHub</h3>
+                <div class="success">
+                    <strong>✅ Enabled by Default:</strong> Every push to <code>main</code> branch automatically deploys
+                </div>
+
+                <h3>Manual Deploy</h3>
+                <div class="step">
+                    <ul>
+                        <li>In Render dashboard, go to your service</li>
+                        <li>Click <code>Manual Deploy</code> button</li>
+                        <li>Select <code>Clear build cache & deploy</code> if needed</li>
+                    </ul>
+                </div>
+
+                <h3>View Logs</h3>
+                <div class="step">
+                    <ul>
+                        <li>Click <code>Logs</code> tab in Render dashboard</li>
+                        <li>Real-time application logs</li>
+                        <li>Filter by: Build, Runtime, System</li>
+                    </ul>
+                </div>
+
+                <h3>Update Environment Variables</h3>
+                <div class="step">
+                    <ul>
+                        <li>Go to <code>Settings → Environment</code></li>
+                        <li>Edit or add new variables</li>
+                        <li>Click <code>Save Changes</code></li>
+                        <li>Service will automatically restart</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TROUBLESHOOTING -->
+            <div class="section">
+                <h2><span class="emoji">🔍</span>Troubleshooting</h2>
+
+                <h3>Build Failed</h3>
+                <div class="step">
+                    <strong>Common Solutions:</strong>
+                    <ul>
+                        <li>Check build logs for specific error</li>
+                        <li>Ensure <code>package.json</code> has correct scripts</li>
+                        <li>Verify Node version compatibility</li>
+                        <li>Try: <code>Clear build cache & deploy</code></li>
+                    </ul>
+                </div>
+
+                <h3>Service Won't Start</h3>
+                <div class="step">
+                    <strong>Check:</strong>
+                    <ul>
+                        <li>All required environment variables are set</li>
+                        <li>Port is set to <code>10000</code> or using <code>process.env.PORT</code></li>
+                        <li>Start command is correct: <code>npm start</code></li>
+                        <li>Check runtime logs for errors</li>
+                    </ul>
+                </div>
+
+                <h3>Database Connection Issues</h3>
+                <div class="step">
+                    <strong>Verify:</strong>
+                    <ul>
+                        <li>Supabase project is active</li>
+                        <li><code>SUPABASE_URL</code> and keys are correct</li>
+                        <li>Database tables are created (run migrations)</li>
+                        <li>Check Supabase dashboard for connection logs</li>
+                    </ul>
+                </div>
+
+                <h3>Custom Domain Not Working</h3>
+                <div class="step">
+                    <strong>Steps:</strong>
+                    <ul>
+                        <li>Verify DNS records are correct (use <a href="https://dnschecker.org" target="_blank">dnschecker.org</a>)</li>
+                        <li>Wait up to 48 hours for DNS propagation</li>
+                        <li>Check domain status in Render dashboard</li>
+                        <li>Ensure SSL certificate is provisioned (automatic)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE -->
+            <div class="section">
+                <h2><span class="emoji">📋</span>Quick Reference</h2>
+
+                <h3>Important URLs</h3>
+                <table>
+                    <tr>
+                        <th>Resource</th>
+                        <th>URL</th>
+                    </tr>
+                    <tr>
+                        <td>GitHub Repo</td>
+                        <td><a href="https://github.com/FXCOOP/tradingsignalapp2" target="_blank">github.com/FXCOOP/tradingsignalapp2</a></td>
+                    </tr>
+                    <tr>
+                        <td>Render Dashboard</td>
+                        <td><a href="https://dashboard.render.com" target="_blank">dashboard.render.com</a></td>
+                    </tr>
+                    <tr>
+                        <td>Supabase Dashboard</td>
+                        <td><a href="https://supabase.com/dashboard" target="_blank">supabase.com/dashboard</a></td>
+                    </tr>
+                    <tr>
+                        <td>UptimeRobot</td>
+                        <td><a href="https://uptimerobot.com" target="_blank">uptimerobot.com</a></td>
+                    </tr>
+                    <tr>
+                        <td>EasyCron</td>
+                        <td><a href="https://www.easycron.com" target="_blank">easycron.com</a></td>
+                    </tr>
+                </table>
+
+                <h3>Git Commands</h3>
+                <div class="code-block">
+<pre># Make changes to code
+cd C:\Users\User\OneDrive\Desktop\tradingsignalapp2
+
+# Commit and push
+git add .
+git commit -m "Your change description"
+git push origin main
+
+# This will automatically trigger deployment on Render</pre>
+                </div>
+
+                <h3>Cost Summary</h3>
+                <table>
+                    <tr>
+                        <th>Service</th>
+                        <th>Plan</th>
+                        <th>Cost</th>
+                    </tr>
+                    <tr>
+                        <td>Render</td>
+                        <td>Free Tier</td>
+                        <td>$0/month (750 hours, spins down)</td>
+                    </tr>
+                    <tr>
+                        <td>Render</td>
+                        <td>Starter</td>
+                        <td>$7/month (always on, recommended)</td>
+                    </tr>
+                    <tr>
+                        <td>Supabase</td>
+                        <td>Free</td>
+                        <td>$0/month (500MB database, 2GB bandwidth)</td>
+                    </tr>
+                    <tr>
+                        <td>OpenAI API</td>
+                        <td>Pay as you go</td>
+                        <td>~$5-20/month (depends on usage)</td>
+                    </tr>
+                    <tr>
+                        <td>UptimeRobot</td>
+                        <td>Free</td>
+                        <td>$0/month (50 monitors)</td>
+                    </tr>
+                    <tr>
+                        <td>EasyCron</td>
+                        <td>Free</td>
+                        <td>$0/month (50 cron jobs)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TOTAL</strong></td>
+                        <td></td>
+                        <td><strong>$7-27/month</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- NEXT STEPS -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span>Next Steps</h2>
+
+                <div class="success">
+                    <h3>✅ Deployment Checklist:</h3>
+                    <ol class="checklist">
+                        <li>Create Render web service</li>
+                        <li>Add all environment variables</li>
+                        <li>Wait for successful build</li>
+                        <li>Test the application</li>
+                        <li>Setup custom domain/subdomain</li>
+                        <li>Configure uptime monitoring (if free tier)</li>
+                        <li>Setup cron jobs for daily signals</li>
+                        <li>Create separate Supabase project</li>
+                        <li>Update client branding</li>
+                        <li>Test all features thoroughly</li>
+                    </ol>
+                </div>
+
+                <div class="info">
+                    <strong>🚀 Ready to Launch?</strong><br>
+                    Follow steps 2-3 above to deploy to Render, then customize for your client!
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <h3>🎉 Deployment Guide Complete</h3>
+            <p>Repository: <strong>tradingsignalapp2</strong> is ready for Render deployment</p>
+            <p style="margin-top: 15px; opacity: 0.8;">Created: 2025 | Client 2 Instance</p>
+        </div>
+    </div>
+</body>
+</html>
